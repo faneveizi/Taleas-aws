@@ -26,7 +26,7 @@ router.get("/", async (req,res) => {
 
 router.get("/:id", async (req,res) => {
     try{
-        const authors = await Author.findById(req.params.id)
+        const authors = await Author.findById(req.params.id).populate("books")
             res.json(authors)
         }catch(err){
             res.json({message: err})

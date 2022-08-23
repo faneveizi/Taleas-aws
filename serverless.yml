@@ -1,7 +1,4 @@
-service: lambda-test
-
-frameworkVersion: '3'
-
+service: fane-lambda
 provider:
   name: aws
   runtime: nodejs16.x
@@ -10,16 +7,77 @@ provider:
   memorySize: 128
 
 functions:
-  app:
-    handler: Index.handler
+  getAuthors:
+    handler: handler.getAuthors
+    events:
+      - http:
+          path: authors
+          method: get
+          cors: true
+  getOneAuthor:
+    handler: handler.getOneAuthor
+    events:
+      - http:
+          path: authors/{id}
+          method: get
+          cors: true
+  postAuthor:
+    handler: handler.postAuthor
+    events:
+      - http:
+          path: authors
+          method: post
+          cors: true
+  updateAuthor:
+    handler: handler.updateAuthor
+    events:
+      - http:
+          path: authors/put/{id}
+          method: put
+          cors: true
+  deleteAuthor:
+    handler: handler.deleteAuthor
     events:
       - http: 
-          path: /
-          method: ANY
-          cors: true
-      - http: 
-          path: /{proxy+}
-          method: ANY
+          path: authors/delete/{id}
+          method: delete
           cors: true
 
-
+  #######################
+  getOneBook:
+    handler: handler.getOneBook
+    events:
+      - http:
+          path: books/{id}
+          method: get
+          cors: true
+  postBookAndAddToAuthor:
+    handler: handler.postBookAndAddToAuthor
+    events:
+      - http:
+          path: authors/{id}
+          method: post
+          cors: true
+  getAllBooks:
+    handler: handler.getAllBooks
+    events:
+      - http:
+          path: books
+          method: get
+          cors: true
+  updateBook:
+    handler: handler.updateBook
+    events:
+      - http:
+          path: books/put/{id}
+          method: put
+          cors: true
+  deleteBook:
+    handler: handler.deleteBook
+    events:
+      - http:
+          path: books/delete/{id}
+          method: delete
+          cors: true
+plugins:
+  - serverless-offline
